@@ -12,7 +12,7 @@ import {
 import { Search, Heart, ShoppingCart, User, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 const navigationItems = [
   { name: "ACCUEIL", href: "/" },
@@ -24,6 +24,7 @@ const navigationItems = [
 
 export function Header() {
   const router = useRouter();
+  const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -34,6 +35,7 @@ export function Header() {
         credentials: "include",
         headers: {
           "Cache-Control": "no-cache",
+          Pragma: "no-cache",
         },
       });
       setIsAuthenticated(res.status === 200);
@@ -47,7 +49,7 @@ export function Header() {
 
   useEffect(() => {
     checkAuth();
-  }, []);
+  }, [pathname]);
 
   const handleLogout = async () => {
     try {
