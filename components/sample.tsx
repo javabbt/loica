@@ -13,26 +13,26 @@ interface Product {
 const products: Product[] = [
   {
     id: 1,
-    name: "Harmonix",
-    price: "79,00€",
+    name: "Smoothflow",
+    price: "9,99€",
     image: "/images/1.png",
   },
   {
     id: 2,
-    name: "Slowburn",
-    price: "14,99€",
+    name: "ChocoTempo",
+    price: "12,99€",
     image: "/images/2.png",
   },
   {
     id: 3,
-    name: "ChocoTempo",
-    price: "12,99€",
+    name: "Slowburn",
+    price: "14,99€",
     image: "/images/3.png",
   },
   {
     id: 4,
-    name: "Smoothflow",
-    price: "9,99€",
+    name: "Harmonix",
+    price: "79.00€",
     image: "/images/4.png",
   },
 ];
