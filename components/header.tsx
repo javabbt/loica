@@ -9,10 +9,9 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
-import { Search, Heart, ShoppingCart, User, Menu as IconMenu, X } from "lucide-react";
+import { Search, Heart, ShoppingCart, User, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useState, useEffect, useCallback, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 
 const navigationItems = [
   { name: "ACCUEIL", href: "/" },
@@ -25,113 +24,53 @@ const navigationItems = [
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [showAccountMenu, setShowAccountMenu] = useState(false);
-  const router = useRouter();
-  const menuRef = useRef<HTMLDivElement>(null);
-
-  // Vérification d'authentification
-  const checkAuth = useCallback(async () => {
-    try {
-      const res = await fetch("/api/auth/check", {
-        credentials: "include",
-      });
-      setIsAuthenticated(res.ok);
-    } catch {
-      setIsAuthenticated(false);
-    }
-  }, []);
 
   useEffect(() => {
-    checkAuth();
-  }, [checkAuth]);
-
-  // Ferme le menu quand on clique à l'extérieur
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-        setShowAccountMenu(false);
+    const checkAuth = async () => {
+      try {
+        const res = await fetch("/api/auth/check", { credentials: "include" });
+        setIsAuthenticated(res.status === 200);
+      } catch {
+        setIsAuthenticated(false);
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    checkAuth();
   }, []);
 
   const handleLogout = async () => {
-    await fetch("/api/auth/logout", {
-      method: "POST",
-      credentials: "include",
-    });
+    await fetch("/api/auth/logout", { method: "POST" });
     setIsAuthenticated(false);
-    setShowAccountMenu(false);
-    router.replace("/login");
+    window.location.href = "/login"; // redirige vers login après déconnexion
   };
 
-  const handleAccountClick = () => {
-    setShowAccountMenu((prev) => !prev);
+  const renderAccountButton = () => {
+    if (isAuthenticated) {
+      return (
+          <Button
+              onClick={handleLogout}
+              variant="ghost"
+              size="icon"
+              className="text-white hover:text-white/80 hover:bg-white/10"
+              aria-label="Se déconnecter"
+          >
+            <User className="h-5 w-5" />
+          </Button>
+      );
+    } else {
+      return (
+          <Link href="/login">
+            <Button
+                variant="ghost"
+                size="icon"
+                className="text-white hover:text-white/80 hover:bg-white/10"
+                aria-label="Se connecter ou créer un compte"
+            >
+              <User className="h-5 w-5" />
+            </Button>
+          </Link>
+      );
+    }
   };
-
-  const accountMenu = (
-      <div
-          ref={menuRef}
-          className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-20"
-      >
-        {isAuthenticated ? (
-            <>
-              <button
-                  onClick={handleLogout}
-                  className="w-full text-left px-4 py-2 hover:bg-gray-100"
-              >
-                Se déconnecter
-              </button>
-              <button
-                  onClick={() => {
-                    setShowAccountMenu(false);
-                    router.push("/login");
-                  }}
-                  className="w-full text-left px-4 py-2 hover:bg-gray-100"
-              >
-                Changer de compte
-              </button>
-            </>
-        ) : (
-            <>
-              <button
-                  onClick={() => {
-                    setShowAccountMenu(false);
-                    router.push("/login");
-                  }}
-                  className="w-full text-left px-4 py-2 hover:bg-gray-100"
-              >
-                Se connecter
-              </button>
-              <button
-                  onClick={() => {
-                    setShowAccountMenu(false);
-                    router.push("/signup");
-                  }}
-                  className="w-full text-left px-4 py-2 hover:bg-gray-100"
-              >
-                Créer un compte
-              </button>
-            </>
-        )}
-      </div>
-  );
-
-  const AccountButton = () => (
-      <div className="relative">
-        <Button
-            variant="ghost"
-            size="icon"
-            className="text-white hover:text-white/80 hover:bg-white/10"
-            onClick={handleAccountClick}
-            aria-label="Account menu"
-        >
-          <User className="h-5 w-5" />
-        </Button>
-        {showAccountMenu && accountMenu}
-      </div>
-  );
 
   return (
       <header className="w-full bg-[#E17B47] border-b border-orange-300">
@@ -160,7 +99,7 @@ export function Header() {
                           <NavigationMenuLink
                               className={cn(
                                   "text-white hover:text-white/80 font-medium text-sm tracking-wide transition-colors duration-200",
-                                  "group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 hover:bg-white/10 focus:bg-white/10 focus:outline-none"
+                                  "group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-white/10 focus:bg-white/10 focus:outline-none disabled:pointer-events-none disabled:opacity-50"
                               )}
                           >
                             {item.name}
@@ -203,7 +142,7 @@ export function Header() {
                   <span className="sr-only">Cart</span>
                 </Button>
 
-                <AccountButton />
+                {renderAccountButton()}
               </div>
 
               {/* Mobile Menu Button */}
@@ -217,7 +156,7 @@ export function Header() {
                 {isMobileMenuOpen ? (
                     <X className="h-6 w-6" />
                 ) : (
-                    <IconMenu className="h-6 w-6" />
+                    <Menu className="h-6 w-6" />
                 )}
               </Button>
             </div>
@@ -238,8 +177,60 @@ export function Header() {
                       </Link>
                   ))}
                 </div>
-                <div className="px-4 py-3 border-t border-orange-300 flex justify-center">
-                  <AccountButton />
+
+                {/* Mobile Icons */}
+                <div className="px-4 py-3 border-t border-orange-300">
+                  <div className="flex justify-center space-x-6">
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="text-white hover:text-white/80 hover:bg-white/10"
+                    >
+                      <Search className="h-5 w-5" />
+                      <span className="sr-only">Search</span>
+                    </Button>
+
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="text-white hover:text-white/80 hover:bg-white/10"
+                    >
+                      <Heart className="h-5 w-5" />
+                      <span className="sr-only">Wishlist</span>
+                    </Button>
+
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="text-white hover:text-white/80 hover:bg-white/10"
+                    >
+                      <ShoppingCart className="h-5 w-5" />
+                      <span className="sr-only">Cart</span>
+                    </Button>
+
+                    {isAuthenticated ? (
+                        <Button
+                            onClick={handleLogout}
+                            variant="ghost"
+                            size="icon"
+                            className="text-white hover:text-white/80 hover:bg-white/10"
+                            aria-label="Se déconnecter"
+                        >
+                          <User className="h-5 w-5" />
+                        </Button>
+                    ) : (
+                        <Link href="/login">
+                          <Button
+                              variant="ghost"
+                              size="icon"
+                              className="text-white hover:text-white/80 hover:bg-white/10"
+                              aria-label="Se connecter ou créer un compte"
+                          >
+                            <User className="h-5 w-5" />
+                          </Button>
+                        </Link>
+                    )}
+                  </div>
                 </div>
               </div>
           )}

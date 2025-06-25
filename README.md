@@ -127,4 +127,4 @@ Pour toute question ou suggestion, n'hésitez pas à nous contacter.
 
 ---
 
-Développé avec ❤️ par l'équipe Loica
+Développé avec ❤️ par l'équipe ❤️ Loica ❤️ 

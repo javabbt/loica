@@ -54,7 +54,6 @@ export default function SignupPage() {
           </div>
 
           <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-            {/* Prénom */}
             <div className="flex items-center border-2 rounded-xl p-4 bg-gray-50 hover:border-gray-400 focus-within:border-black focus-within:bg-white transition-all">
               <User className="w-5 h-5 text-gray-500 mr-3" />
               <input
@@ -67,7 +66,6 @@ export default function SignupPage() {
               />
             </div>
 
-            {/* Ville */}
             <div className="flex items-center border-2 rounded-xl p-4 bg-gray-50 hover:border-gray-400 focus-within:border-black focus-within:bg-white transition-all">
               <MapPin className="w-5 h-5 text-gray-500 mr-3" />
               <input
@@ -80,7 +78,6 @@ export default function SignupPage() {
               />
             </div>
 
-            {/* Adresse */}
             <div className="flex items-center border-2 rounded-xl p-4 bg-gray-50 hover:border-gray-400 focus-within:border-black focus-within:bg-white transition-all">
               <Home className="w-5 h-5 text-gray-500 mr-3" />
               <input
@@ -93,7 +90,6 @@ export default function SignupPage() {
               />
             </div>
 
-            {/* Téléphone */}
             <div className="flex items-center border-2 rounded-xl p-4 bg-gray-50 hover:border-gray-400 focus-within:border-black focus-within:bg-white transition-all">
               <Phone className="w-5 h-5 text-gray-500 mr-3" />
               <input
@@ -106,7 +102,6 @@ export default function SignupPage() {
               />
             </div>
 
-            {/* Email */}
             <div className="flex items-center border-2 rounded-xl p-4 bg-gray-50 hover:border-gray-400 focus-within:border-black focus-within:bg-white transition-all">
               <Mail className="w-5 h-5 text-gray-500 mr-3" />
               <input
@@ -119,7 +114,6 @@ export default function SignupPage() {
               />
             </div>
 
-            {/* Mot de passe */}
             <div className="flex items-center border-2 rounded-xl p-4 bg-gray-50 hover:border-gray-400 focus-within:border-black focus-within:bg-white transition-all">
               <Lock className="w-5 h-5 text-gray-500 mr-3" />
               <input
@@ -132,7 +126,6 @@ export default function SignupPage() {
               />
             </div>
 
-            {/* Erreur ou succès */}
             {error && (
                 <div className="text-red-500 text-sm text-center bg-red-50 p-3 rounded-lg">
                   {error}
@@ -144,7 +137,6 @@ export default function SignupPage() {
                 </div>
             )}
 
-            {/* Bouton */}
             <div>
               <button
                   type="submit"
@@ -154,7 +146,6 @@ export default function SignupPage() {
               </button>
             </div>
 
-            {/* Lien vers connexion */}
             <div className="text-center mt-6">
               <Link
                   href="/login"

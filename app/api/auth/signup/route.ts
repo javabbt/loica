@@ -1,3 +1,4 @@
+// app/api/auth/signup/route.ts
 import { NextResponse } from "next/server";
 import { addUser, findUserByEmail } from "@/data/users";
 
@@ -11,14 +12,17 @@ export async function POST(request: Request) {
 
         addUser({ email, password, firstName, city, address, phone });
 
-        const response = NextResponse.json({ success: true });
+        const token = "fake-token-" + Date.now();
+        const response = NextResponse.json({ success: true, token });
+
         response.cookies.set({
             name: "auth-token",
-            value: "fake-token-" + Date.now(),
+            value: token,
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "lax",
             maxAge: 60 * 60 * 24 * 7, // 1 semaine
+            path: "/",
         });
 
         return response;
