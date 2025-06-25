@@ -38,7 +38,8 @@ export default function SignupPage() {
       } else {
         setError(data.error || "Une erreur est survenue");
       }
-    } catch (err) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
       setError("Une erreur est survenue");
     }
   };
