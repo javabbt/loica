@@ -94,14 +94,16 @@ export function Header() {
                 <span className="sr-only">Cart</span>
               </Button>
 
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-white hover:text-white/80 hover:bg-white/10"
-              >
-                <User className="h-5 w-5" />
-                <span className="sr-only">Account</span>
-              </Button>
+              <Link href="/login">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-white hover:text-white/80 hover:bg-white/10"
+                >
+                  <User className="h-5 w-5" />
+                  <span className="sr-only">Account</span>
+                </Button>
+              </Link>
             </div>
 
             {/* Mobile Menu Button */}
@@ -167,14 +169,16 @@ export function Header() {
                   <span className="sr-only">Cart</span>
                 </Button>
 
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="text-white hover:text-white/80 hover:bg-white/10"
-                >
-                  <User className="h-5 w-5" />
-                  <span className="sr-only">Account</span>
-                </Button>
+                <Link href="/login">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="text-white hover:text-white/80 hover:bg-white/10"
+                  >
+                    <User className="h-5 w-5" />
+                    <span className="sr-only">Account</span>
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>
